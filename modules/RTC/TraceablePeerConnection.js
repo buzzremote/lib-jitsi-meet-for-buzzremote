@@ -387,35 +387,35 @@ export default function TraceablePeerConnection(
     };
     
     //Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
-    const useRTCDataChannel = this.isP2P && window.config.useRTCDataChannel;
-    this.ondatachannel = null;
-    
-    if(useRTCDataChannel) {
-	    this.peerconnection.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel', {negotiated: true, id:0});
-    }
+//    const useRTCDataChannel = this.isP2P && window.config.useRTCDataChannel;
+//    this.ondatachannel = null;
+//    
+//    if(useRTCDataChannel) {
+//	    this.peerconnection.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel', {negotiated: true, id:0});
+//    }
     
     this.peerconnection.ondatachannel = event => {
         this.trace('ondatachannel');
         
-        if(useRTCDataChannel) {
-	        remoteControlDataChannel = event.channel;
-	        remoteControlDataChannel.onmessage = ({data}) => {
-	        	console.log("****************msg rcv***************" + data);
-	        	
-	        	try {
-	                obj = JSON.parse(data);
-	            } catch (error) {
-	                GlobalOnErrorHandler.callErrorHandler(error);
-	                logger.error(
-	                    'Failed to parse channel message as JSON: ',
-	                    data, error);
-	
-	                return;
-	            }
-	        	
-	        	this.eventEmitter.emit(RTCEvents.ENDPOINT_MESSAGE_RECEIVED, obj.from, obj.msgPayload);
-	        }
-        }
+//        if(useRTCDataChannel) {
+//	        remoteControlDataChannel = event.channel;
+//	        remoteControlDataChannel.onmessage = ({data}) => {
+//	        	console.log("****************msg rcv***************" + data);
+//	        	
+//	        	try {
+//	                obj = JSON.parse(data);
+//	            } catch (error) {
+//	                GlobalOnErrorHandler.callErrorHandler(error);
+//	                logger.error(
+//	                    'Failed to parse channel message as JSON: ',
+//	                    data, error);
+//	
+//	                return;
+//	            }
+//	        	
+//	        	this.eventEmitter.emit(RTCEvents.ENDPOINT_MESSAGE_RECEIVED, obj.from, obj.msgPayload);
+//	        }
+//        }
         
         if (this.ondatachannel !== null) {
             this.ondatachannel(event);
