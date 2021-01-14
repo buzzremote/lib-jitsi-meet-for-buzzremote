@@ -387,31 +387,37 @@ export default function TraceablePeerConnection(
     };
     
     //Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
-    this.peerconnection.remoteControlDataChannel = this.peerconnection.createDataChannel('remoteControlDataChannel');
-    
+    const useRTCDataChannel = window.config.useRTCDataChannel;
     this.ondatachannel = null;
+    
+    if(useRTCDataChannel) {
+	    this.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel');
+	    
+	    this.ondatachannel = event => {
+	    	remoteControlDataChannel = event.channel;
+	        remoteControlDataChannel.onmessage = ({data}) => {
+	        	console.log("****************msg rcv***************" + data);
+	        	
+	        	try {
+	                obj = JSON.parse(data);
+	            } catch (error) {
+	                GlobalOnErrorHandler.callErrorHandler(error);
+	                logger.error(
+	                    'Failed to parse channel message as JSON: ',
+	                    data, error);
+	
+	                return;
+	            }
+	        	
+	        	this.eventEmitter.emit(RTCEvents.ENDPOINT_MESSAGE_RECEIVED, obj.from, obj.msgPayload);
+	        }
+	    }
+    }
+    
     this.peerconnection.ondatachannel = event => {
         this.trace('ondatachannel');
         if (this.ondatachannel !== null) {
             this.ondatachannel(event);
-        }
-        
-        remoteControlDataChannel = event.channel;
-        remoteControlDataChannel.onmessage = ({data}) => {
-        	console.log("****************msg rcv***************" + data);
-        	
-        	try {
-                obj = JSON.parse(data);
-            } catch (error) {
-                GlobalOnErrorHandler.callErrorHandler(error);
-                logger.error(
-                    'Failed to parse channel message as JSON: ',
-                    data, error);
-
-                return;
-            }
-        	
-        	this.eventEmitter.emit(RTCEvents.ENDPOINT_MESSAGE_RECEIVED, obj.from, obj.msgPayload);
         }
     };
 

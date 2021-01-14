@@ -2517,7 +2517,7 @@ JitsiConference.prototype._fireIncompatibleVersionsEvent = function() {
  */
 JitsiConference.prototype.sendEndpointMessage = function(to, payload) {
 	//Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
-	if(this.p2p && this.p2pJingleSession) {
+	if(this.p2p && this.p2pJingleSession && this.options.config.useRTCDataChannel && this.p2pJingleSession.peerconnection.remoteControlDataChannel.readyState === 'connected') {
 		this.p2pJingleSession.peerconnection.remoteControlDataChannel.send(payload);
 	}else {
 		this.rtc.sendChannelMessage(to, payload);
