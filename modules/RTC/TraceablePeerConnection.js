@@ -391,7 +391,7 @@ export default function TraceablePeerConnection(
     this.ondatachannel = null;
     
     if(useRTCDataChannel) {
-	    this.peerconnection.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel', {negotiated: true});
+	    this.peerconnection.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel', {negotiated: true, id:0});
     }
     
     this.peerconnection.ondatachannel = event => {
