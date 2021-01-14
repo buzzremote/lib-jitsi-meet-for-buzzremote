@@ -2018,12 +2018,21 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
         wsUrl = webSocket[0].getAttribute('url');
     }
 
-    if (wsUrl) {
-        // If the offer contains a websocket use it.
-        this.rtc.initializeBridgeChannel(null, wsUrl);
-    } else {
-        // Otherwise, fall back to an attempt to use SCTP.
-        this.rtc.initializeBridgeChannel(pc, null);
+    //useRTCDataChannel
+    //Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
+//    if (wsUrl) {
+//        // If the offer contains a websocket use it.
+//        this.rtc.initializeBridgeChannel(null, wsUrl);
+//    } else {
+//        // Otherwise, fall back to an attempt to use SCTP.
+//        this.rtc.initializeBridgeChannel(pc, null);
+//    }
+    
+    const useRTCDataChannel = this.options.config.useRTCDataChannel;
+    if(useRTCDataChannel || !wsUrl) {
+    	this.rtc.initializeBridgeChannel(pc, null);
+    }else {
+    	this.rtc.initializeBridgeChannel(null, wsUrl);
     }
 };
 
@@ -2516,12 +2525,7 @@ JitsiConference.prototype._fireIncompatibleVersionsEvent = function() {
  * @deprecated Use 'sendMessage' instead. TODO: this should be private.
  */
 JitsiConference.prototype.sendEndpointMessage = function(to, payload) {
-	//Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
-//	if(this.p2p && this.p2pJingleSession && this.options.config.useRTCDataChannel && this.p2pJingleSession.peerconnection.peerconnection.remoteControlDataChannel.readyState === 'connected') {
-//		this.p2pJingleSession.peerconnection.peerconnection.remoteControlDataChannel.send(payload);
-//	}else {
-		this.rtc.sendChannelMessage(to, payload);
-	//}
+	this.rtc.sendChannelMessage(to, payload);
 };
 
 /**
