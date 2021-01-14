@@ -387,7 +387,7 @@ export default function TraceablePeerConnection(
     };
     
     //Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
-    const useRTCDataChannel = window.config.useRTCDataChannel;
+    const useRTCDataChannel = this.isP2P && window.config.useRTCDataChannel;
     this.ondatachannel = null;
     
     if(useRTCDataChannel) {
