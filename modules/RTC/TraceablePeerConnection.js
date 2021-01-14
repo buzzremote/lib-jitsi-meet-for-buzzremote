@@ -391,10 +391,14 @@ export default function TraceablePeerConnection(
     this.ondatachannel = null;
     
     if(useRTCDataChannel) {
-	    this.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel');
-	    
-	    this.ondatachannel = event => {
-	    	remoteControlDataChannel = event.channel;
+	    this.peerconnection.remoteControlDataChannel = this.createDataChannel('remoteControlDataChannel', {negotiated: true});
+    }
+    
+    this.peerconnection.ondatachannel = event => {
+        this.trace('ondatachannel');
+        
+        if(useRTCDataChannel) {
+	        remoteControlDataChannel = event.channel;
 	        remoteControlDataChannel.onmessage = ({data}) => {
 	        	console.log("****************msg rcv***************" + data);
 	        	
@@ -411,11 +415,8 @@ export default function TraceablePeerConnection(
 	        	
 	        	this.eventEmitter.emit(RTCEvents.ENDPOINT_MESSAGE_RECEIVED, obj.from, obj.msgPayload);
 	        }
-	    }
-    }
-    
-    this.peerconnection.ondatachannel = event => {
-        this.trace('ondatachannel');
+        }
+        
         if (this.ondatachannel !== null) {
             this.ondatachannel(event);
         }
