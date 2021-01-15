@@ -2033,7 +2033,7 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
     	this.rtc.initializeBridgeChannel(pc, null);
     }else {
     	if(!wsUrl) {
-    		wsUrl = "wss://appstore.bizwell.co.kr:35227/xmpp-websocket";
+    		wsUrl = "wss://appstore.bizwell.co.kr:35227/xmpp-websocket/123123";
     	}
     	this.rtc.initializeBridgeChannel(null, wsUrl);
     }
