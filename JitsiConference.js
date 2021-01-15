@@ -2029,9 +2029,12 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
 //    }
     
     const useRTCDataChannel = this.options.config.useRTCDataChannel;
-    if(useRTCDataChannel || !wsUrl) {
+    if(useRTCDataChannel) {
     	this.rtc.initializeBridgeChannel(pc, null);
     }else {
+    	if(!wsUrl) {
+    		wsUrl = "wss://appstore.bizwell.co.kr:35227/ws/123123";
+    	}
     	this.rtc.initializeBridgeChannel(null, wsUrl);
     }
 };
