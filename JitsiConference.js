@@ -2693,6 +2693,9 @@ JitsiConference.prototype._acceptP2PIncomingCall = function(
             ...this.options.config,
             enableInsertableStreams: this._isE2EEEnabled()
         });
+    
+    //Bizwell. P2P 연결시 브릿지 채널 설정 추가, LeeJx2, 2021.01.15
+    this._setBridgeChannel(jingleOffer, jingleSession.peerconnection);
 
     logger.info('Starting CallStats for P2P connection...');
 
