@@ -2035,7 +2035,7 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
     	if(!wsUrl) {
     		const state = APP.store.getState();
     		wsUrl = "wss://" + state['features/base/config'].hosts.domain;
-    		wsUrl += ":35229/";
+    		wsUrl += ":35229/remotews/";
     		wsUrl += state['features/base/conference'].room;
     	}
     	this.rtc.initializeBridgeChannel(null, wsUrl);
