@@ -2033,7 +2033,11 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
     	this.rtc.initializeBridgeChannel(pc, null);
     }else {
     	if(!wsUrl) {
-    		wsUrl = location.href.replace('https://', 'wss://') + "/xmpp-websocket";//"wss://appstore.bizwell.co.kr:35227/xmpp-websocket/123123";
+    		const state = APP.store.getState();
+    		wsUrl = state['features/base/config'].bosh;
+    		wsUrl = wsUrl.replace("https://", "wss://");
+    		wsUrl = wsUrl.replace("http-bind", "remotews");
+    		wsUrl += state['features/base/conference'].room;
     	}
     	this.rtc.initializeBridgeChannel(null, wsUrl);
     }
