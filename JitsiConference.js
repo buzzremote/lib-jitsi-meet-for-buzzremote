@@ -2020,20 +2020,20 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
 
     //useRTCDataChannel
     //Bizwell. 원격제어 동작 P2P 메시징 이벤트 추가, LeeJx2, 2021.01.11
-//    if (wsUrl) {
-//        // If the offer contains a websocket use it.
-//        this.rtc.initializeBridgeChannel(null, wsUrl);
-//    } else {
-//        // Otherwise, fall back to an attempt to use SCTP.
-//        this.rtc.initializeBridgeChannel(pc, null);
-//    }
-    
-    const useRTCDataChannel = this.options.config.useRTCDataChannel;
-    if(useRTCDataChannel) {
-    	this.rtc.initializeBridgeChannel(pc, null);
-    }else {
-    	this.rtc.initializeBridgeChannel(null, wsUrl);
+    if (wsUrl) {
+        // If the offer contains a websocket use it.
+        this.rtc.initializeBridgeChannel(null, wsUrl);
+    } else {
+        // Otherwise, fall back to an attempt to use SCTP.
+        this.rtc.initializeBridgeChannel(pc, null);
     }
+    
+//    const useRTCDataChannel = this.options.config.useRTCDataChannel;
+//    if(useRTCDataChannel) {
+//    	this.rtc.initializeBridgeChannel(pc, null);
+//    }else {
+//    	this.rtc.initializeBridgeChannel(null, wsUrl);
+//    }
 };
 
 /**
