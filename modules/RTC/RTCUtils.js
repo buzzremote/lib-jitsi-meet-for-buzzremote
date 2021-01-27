@@ -933,7 +933,7 @@ class RTCUtils extends Listenable {
 //                reject(new JitsiTrackError(error, constraints, um));
 //            });
             updateGrantedPermissions(um, undefined);
-            reject(new JitsiTrackError(error, constraints, um));
+            reject();
         });
     }
 
@@ -960,7 +960,7 @@ class RTCUtils extends Listenable {
 //                    reject(new JitsiTrackError(error, constraints, umDevices));
 //                });
         	updateGrantedPermissions(umDevices, undefined);
-        	reject(new JitsiTrackError(error, constraints, umDevices));
+        	reject();
         });
     }
 
