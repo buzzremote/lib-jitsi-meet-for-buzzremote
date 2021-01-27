@@ -44,14 +44,16 @@ class JitsiMediaDevices {
         // 'microphone' permissions are implemented. (Testing for at least one
         // of them seems sufficient).
         this._permissionsApiSupported = new Promise(resolve => {
-            if (!navigator.permissions) {
-                resolve(false);
-
-                return;
-            }
-
-            navigator.permissions.query({ name: VIDEO_PERMISSION_NAME })
-                .then(() => resolve(true), () => resolve(false));
+        	//Bizwell. 카메라, 오디오 사용권한 묻지 않음
+//            if (!navigator.permissions) {
+//                resolve(false);
+//
+//                return;
+//            }
+//
+//            navigator.permissions.query({ name: VIDEO_PERMISSION_NAME })
+//                .then(() => resolve(true), () => resolve(false));
+        	resolve(false);
         });
     }
 
@@ -150,29 +152,30 @@ class JitsiMediaDevices {
 
                 const promises = [];
 
-                switch (type) {
-                case MediaType.VIDEO:
-                    promises.push(
-                        navigator.permissions.query({
-                            name: VIDEO_PERMISSION_NAME
-                        }));
-                    break;
-                case MediaType.AUDIO:
-                    promises.push(
-                        navigator.permissions.query({
-                            name: AUDIO_PERMISSION_NAME
-                        }));
-                    break;
-                default:
-                    promises.push(
-                        navigator.permissions.query({
-                            name: VIDEO_PERMISSION_NAME
-                        }));
-                    promises.push(
-                        navigator.permissions.query({
-                            name: AUDIO_PERMISSION_NAME
-                        }));
-                }
+                //Bizwell. 카메라, 오디오 사용권한 묻지 않음
+//                switch (type) {
+//                case MediaType.VIDEO:
+//                    promises.push(
+//                        navigator.permissions.query({
+//                            name: VIDEO_PERMISSION_NAME
+//                        }));
+//                    break;
+//                case MediaType.AUDIO:
+//                    promises.push(
+//                        navigator.permissions.query({
+//                            name: AUDIO_PERMISSION_NAME
+//                        }));
+//                    break;
+//                default:
+//                    promises.push(
+//                        navigator.permissions.query({
+//                            name: VIDEO_PERMISSION_NAME
+//                        }));
+//                    promises.push(
+//                        navigator.permissions.query({
+//                            name: AUDIO_PERMISSION_NAME
+//                        }));
+//                }
 
                 Promise.all(promises).then(
                     results => resolve(results.every(permissionStatus => {
@@ -182,7 +185,8 @@ class JitsiMediaDevices {
                         const grantStatus = permissionStatus.state
                             || permissionStatus.status;
 
-                        return grantStatus === PERMISSION_GRANTED_STATUS;
+                        //Bizwell. 카메라, 오디오 사용권한 묻지 않음
+                        return false;//grantStatus === PERMISSION_GRANTED_STATUS;
                     })),
                     () => resolve(false)
                 );

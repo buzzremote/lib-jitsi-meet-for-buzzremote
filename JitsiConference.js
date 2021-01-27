@@ -1421,13 +1421,6 @@ JitsiConference.prototype.getParticipantById = function(id) {
 };
 
 /**
- * Bizwell. 원격제어 participant를 무조건 상대방으로 변경, LeeJx2, 2021.01.26
- */
-JitsiConference.prototype.getOpponentParticipant = function() {
-	return Object.entries(this.participants)[0][1];
-}
-
-/**
  * Grant owner rights to the participant.
  * @param {string} id id of the participant to grant owner rights to.
  */

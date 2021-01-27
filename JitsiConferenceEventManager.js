@@ -487,9 +487,7 @@ JitsiConferenceEventManager.prototype.setupRTCListeners = function() {
 
     rtc.addListener(RTCEvents.ENDPOINT_MESSAGE_RECEIVED,
         (from, payload) => {
-        	//Bizwell. 원격제어 participant를 무조건 상대방으로 변경, LeeJx2, 2021.01.26
-            //const participant = conference.getParticipantById(from);
-            const participant = conference.getOpponentParticipant();
+            const participant = conference.getParticipantById(from);
 
             if (participant) {
                 conference.eventEmitter.emit(
