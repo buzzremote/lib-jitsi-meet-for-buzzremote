@@ -185,6 +185,14 @@ Moderator.prototype.createConferenceIq = function() {
                 value: config.minBitrate
             }).up();
     }
+    
+    //Bizwell. WebRTC 사용여부에 따라 jvb sctp 사용여부 설정
+    const useRTCDataChannel = config.useRTCDataChannel;
+    elem.c(
+        'property', {
+            name: 'openSctp',
+            value: Boolean(useRTCDataChannel)
+        }).up();
 
     if (config.opusMaxAverageBitrate) {
         elem.c(
