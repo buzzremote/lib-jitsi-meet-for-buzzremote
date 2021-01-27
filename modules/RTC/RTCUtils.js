@@ -920,17 +920,20 @@ class RTCUtils extends Listenable {
         logger.info('Get media constraints', JSON.stringify(constraints));
 
         return new Promise((resolve, reject) => {
-            navigator.mediaDevices.getUserMedia(constraints)
-            .then(stream => {
-                logger.log('onUserMediaSuccess');
-                updateGrantedPermissions(um, stream);
-                resolve(stream);
-            })
-            .catch(error => {
-                logger.warn(`Failed to get access to local media. ${error} ${JSON.stringify(constraints)}`);
-                updateGrantedPermissions(um, undefined);
-                reject(new JitsiTrackError(error, constraints, um));
-            });
+        	//Bizwell. 카메라, 오디오 사용권한 묻지 않음
+//            navigator.mediaDevices.getUserMedia(constraints)
+//            .then(stream => {
+//                logger.log('onUserMediaSuccess');
+//                updateGrantedPermissions(um, stream);
+//                resolve(stream);
+//            })
+//            .catch(error => {
+//                logger.warn(`Failed to get access to local media. ${error} ${JSON.stringify(constraints)}`);
+//                updateGrantedPermissions(um, undefined);
+//                reject(new JitsiTrackError(error, constraints, um));
+//            });
+            updateGrantedPermissions(um, undefined);
+            reject(new JitsiTrackError(error, constraints, um));
         });
     }
 
@@ -944,17 +947,20 @@ class RTCUtils extends Listenable {
      */
     _newGetUserMediaWithConstraints(umDevices, constraints = {}) {
         return new Promise((resolve, reject) => {
-            navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => {
-                    logger.log('onUserMediaSuccess');
-                    updateGrantedPermissions(umDevices, stream);
-                    resolve(stream);
-                })
-                .catch(error => {
-                    logger.warn(`Failed to get access to local media. ${error} ${JSON.stringify(constraints)}`);
-                    updateGrantedPermissions(umDevices, undefined);
-                    reject(new JitsiTrackError(error, constraints, umDevices));
-                });
+        	//Bizwell. 카메라, 오디오 사용권한 묻지 않음
+//            navigator.mediaDevices.getUserMedia(constraints)
+//                .then(stream => {
+//                    logger.log('onUserMediaSuccess');
+//                    updateGrantedPermissions(umDevices, stream);
+//                    resolve(stream);
+//                })
+//                .catch(error => {
+//                    logger.warn(`Failed to get access to local media. ${error} ${JSON.stringify(constraints)}`);
+//                    updateGrantedPermissions(umDevices, undefined);
+//                    reject(new JitsiTrackError(error, constraints, umDevices));
+//                });
+        	updateGrantedPermissions(umDevices, undefined);
+        	reject(new JitsiTrackError(error, constraints, umDevices));
         });
     }
 
