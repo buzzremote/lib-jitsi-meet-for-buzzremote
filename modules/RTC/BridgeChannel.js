@@ -173,14 +173,13 @@ export default class BridgeChannel {
      * @return {boolean}
      */
     isOpen() {
-    	const isOpen = this._channel && (this._channel.readyState === 'open'
+    	//Bizwell.
+    	if(this._mode === 'datachannel' && this._channel.readyState === 'connecting') {
+    		this.reconnectBridgeChannel();
+    	}
+    	
+        return this._channel && (this._channel.readyState === 'open'
             || this._channel.readyState === WebSocket.OPEN);
-    	
-//    	if(!isOpen) {
-//    		this.reconnectBridgeChannel();
-//    	}
-    	
-        return isOpen;
     }
 
     /**
