@@ -388,6 +388,8 @@ export default class BridgeChannel {
         		logger.error('Bridge Channel Reconnect');
         		this.reconnectBridgeChannel();
         	}
+        	
+        	return;
         }
 
         channel.send(JSON.stringify(jsonObject));
