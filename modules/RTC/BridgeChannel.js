@@ -173,11 +173,6 @@ export default class BridgeChannel {
      * @return {boolean}
      */
     isOpen() {
-    	//Bizwell.
-    	if(this._mode === 'datachannel' && this._channel.readyState === 'connecting') {
-    		this.reconnectBridgeChannel();
-    	}
-    	
         return this._channel && (this._channel.readyState === 'open'
             || this._channel.readyState === WebSocket.OPEN);
     }
@@ -386,7 +381,13 @@ export default class BridgeChannel {
 
         if (!this.isOpen()) {
             logger.error('Bridge Channel send: no opened channel.');
-            throw new Error('No opened channel');
+            //throw new Error('No opened channel');
+            
+            //Bizwell.
+        	if(this._mode === 'datachannel' && this._channel.readyState === 'connecting') {
+        		logger.error('Bridge Channel Reconnect');
+        		this.reconnectBridgeChannel();
+        	}
         }
 
         channel.send(JSON.stringify(jsonObject));
