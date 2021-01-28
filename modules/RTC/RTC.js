@@ -286,8 +286,10 @@ export default class RTC extends Listenable {
             peerconnection, wsUrl, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
         
         //Bizwell. bridge 연결 실패시 ws 전환
-        this._channel.backupUrl = backupUrl;
-        this._channel.reconnectBridgeChannel = this.initializeBridgeChannel.bind(this);
+        this._channel.reconnectBridgeChannel = () => {
+        	this.closeBridgeChannel();
+        	this.initializeBridgeChannel(null, backupUrl, backupUrl);
+        }
 
         this._channelOpenListener = () => {
             // When the channel becomes available, tell the bridge about
