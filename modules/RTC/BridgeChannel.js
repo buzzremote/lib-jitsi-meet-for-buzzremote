@@ -176,9 +176,9 @@ export default class BridgeChannel {
     	const isOpen = this._channel && (this._channel.readyState === 'open'
             || this._channel.readyState === WebSocket.OPEN);
     	
-    	if(!isOpen) {
-    		this.reconnectBridgeChannel();
-    	}
+//    	if(!isOpen) {
+//    		this.reconnectBridgeChannel();
+//    	}
     	
         return isOpen;
     }
