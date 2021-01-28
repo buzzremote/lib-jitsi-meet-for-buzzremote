@@ -2030,9 +2030,9 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
     
     const useRTCDataChannel = this.options.config.useRTCDataChannel;
     if(useRTCDataChannel) {
-    	this.rtc.initializeBridgeChannel(pc, null);
+    	this.rtc.initializeBridgeChannel(pc, null, wsUrl);
     }else {
-    	this.rtc.initializeBridgeChannel(null, wsUrl);
+    	this.rtc.initializeBridgeChannel(null, wsUrl, wsUrl);
     }
 };
 
