@@ -286,14 +286,7 @@ export default class RTC extends Listenable {
             peerconnection, wsUrl, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
         
         //Bizwell. channel 연결 실패시 재연결
-        this._channel.reconnectBridgeChannel = () => {
-        	this.closeBridgeChannel();
-        	
-        	let session /*= APP.store.getState()['features/base/conference'].conference.p2pJingleSession;
-        	if(!session) session*/ = APP.store.getState()['features/base/conference'].conference.jvbJingleSession;
-        	
-        	this.initializeBridgeChannel(session.peerconnection);
-        }
+        this._channel.reconnectBridgeChannel = this.reconnectBridgeChannel.bind(this);
 
         this._channelOpenListener = () => {
             // When the channel becomes available, tell the bridge about
@@ -336,6 +329,54 @@ export default class RTC extends Listenable {
             this._channelOpenListener);
 
         // Add Last N change listener.
+        this.addListener(RTCEvents.LASTN_ENDPOINT_CHANGED,
+            this._lastNChangeListener);
+    }
+    
+    /**
+     * Bizwell. channel 연결 실패시 재연결
+     */
+    reconnectBridgeChannel() {
+    	this.closeBridgeChannel();
+    	
+    	const peerconnection = APP.store.getState()['features/base/conference'].conference.jvbJingleSession.peerconnection;
+    	
+        this._channel = new BridgeChannel(
+            peerconnection, null, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
+        
+        this._channelOpenListener = () => {
+        	logger.error('Bridge Channel Reconnected!');
+            try {
+                this._channel.sendPinnedEndpointMessage(
+                    this._pinnedEndpoint);
+                this._channel.sendSelectedEndpointsMessage(
+                    this._selectedEndpoints);
+
+                if (typeof this._maxFrameHeight !== 'undefined') {
+                    this._channel.sendReceiverVideoConstraintMessage(
+                        this._maxFrameHeight);
+                }
+            } catch (error) {
+                GlobalOnErrorHandler.callErrorHandler(error);
+                logger.error(
+                    `Cannot send selected(${this._selectedEndpoint})`
+                    + `pinned(${this._pinnedEndpoint})`
+                    + `frameHeight(${this._maxFrameHeight}) endpoint message`,
+                    error);
+            }
+
+            this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
+                this._channelOpenListener);
+            this._channelOpenListener = null;
+
+            if (this._lastN !== -1) {
+                this._channel.sendSetLastNMessage(this._lastN);
+            }
+        };
+
+        this.addListener(RTCEvents.DATA_CHANNEL_OPEN,
+            this._channelOpenListener);
+
         this.addListener(RTCEvents.LASTN_ENDPOINT_CHANGED,
             this._lastNChangeListener);
     }
