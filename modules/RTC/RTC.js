@@ -945,7 +945,12 @@ export default class RTC extends Listenable {
         if (this._channel) {
             this._channel.sendMessage(to, payload);
         } else {
-            throw new Error('Channel support is disabled!');
+        	//Bizwell.
+            //throw new Error('Channel support is disabled!');
+        	let session = APP.store.getState()['features/base/conference'].conference.p2pJingleSession;
+        	if(!session) session = APP.store.getState()['features/base/conference'].conference.jvbJingleSession;
+        	
+        	this.initializeBridgeChannel(session.peerconnection);
         }
     }
 
