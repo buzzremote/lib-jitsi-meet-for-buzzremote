@@ -281,15 +281,23 @@ export default class RTC extends Listenable {
      * instance.
      * @param {string} [wsUrl] WebSocket URL.
      */
-    initializeBridgeChannel(peerconnection, wsUrl, backupUrl) {
+    initializeBridgeChannel(peerconnection, wsUrl) {
         this._channel = new BridgeChannel(
             peerconnection, wsUrl, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
         
-        //Bizwell. bridge 연결 실패시 ws 전환
-        localStorage.backupUrl = backupUrl;
+        //Bizwell. channel 연결 실패시 재연결
+        localStorage.reconnectionData = {
+        	 peerconnection: peerconnection,
+        	 wsUrl: wsUrl
+        }
         this._channel.reconnectBridgeChannel = () => {
         	this.closeBridgeChannel();
-        	this.initializeBridgeChannel(null, localStorage.backupUrl, localStorage.backupUrl);
+        	
+        	let pConn = localStorage.reconnectionData.peerconnection;
+        	let wsUrl = localStorage.reconnectionData.wsUrl;
+        	if(pConn && wsUrl) wsUrl = null;
+        	
+        	this.initializeBridgeChannel(pConn, wsUrl);
         }
 
         this._channelOpenListener = () => {
