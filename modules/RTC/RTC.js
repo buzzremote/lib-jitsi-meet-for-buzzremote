@@ -338,21 +338,19 @@ export default class RTC extends Listenable {
     reconnectBridgeChannel() {
     	this.closeBridgeChannel();
     	
-    	let peerconnection = null;
-    	const conference = APP.store.getState()['features/base/conference'].conference;
-    	if(conference.jvbJingleSession) {
-    		peerconnection = conference.jvbJingleSession.peerconnection;
-    	}else {
-    		peerconnection = conference.p2pJingleSession.peerconnection;
-    	}
+//    	let peerconnection = null;
+//    	APP.store.getState()['features/base/conference'].conference.rtc.peerConnections.forEach((conn) => {
+//    		peerconnection = conn;
+//    	});
+    	const wsUrl = this.getCookie("wsUrl");
     	
         this._channel = new BridgeChannel(
-            peerconnection, null, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
+            null, wsUrl, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
         
         this._channel.reconnectBridgeChannel = this.reconnectBridgeChannel.bind(this);
         
         this._channelOpenListener = () => {
-        	logger.error('Bridge Channel Reconnected!');
+        	logger.error('WebSocket Channel Reconnected!');
             try {
                 this._channel.sendPinnedEndpointMessage(
                     this._pinnedEndpoint);
@@ -385,6 +383,39 @@ export default class RTC extends Listenable {
 
         this.addListener(RTCEvents.LASTN_ENDPOINT_CHANGED,
             this._lastNChangeListener);
+    }
+    
+    getCookie (name) {  
+	      var arg = name + "=";  
+	      var alen = arg.length;  
+	      var clen = document.cookie.length;  
+	      var i = 0;  
+	      while (i < clen) {    
+	    	  var j = i + alen;    
+	    	  if (document.cookie.substring(i, j) == arg)      
+	    	      return getCookieVal (j);    
+	    	   i = document.cookie.indexOf(" ", i) + 1;    
+	    	   if (i == 0) break;   
+	      }  
+	      return null;
+    };
+
+    getCookieVal (offset) {  
+	      var endstr = document.cookie.indexOf (";", offset);  
+	      if (endstr == -1)    
+	        endstr = document.cookie.length;  
+	      return unescape(document.cookie.substring(offset, endstr));
+    };
+
+    delCookie(name){
+	     var today=new Date();
+	     today.setDate(today.getDate() - 1);
+	     var value=getCookie(name);
+	     if(value!=""){
+	    	 value = stringReplace(value,"\\n","");
+	    	 value = stringReplace(value,"\\r","");
+	    	 document.cookie=name+"="+value+"; path=/; expires="+today.toGMTString();
+	     }
     }
 
     /**

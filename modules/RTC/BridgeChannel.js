@@ -385,7 +385,7 @@ export default class BridgeChannel {
             
             //Bizwell.
         	if(this._mode === 'datachannel' && this._channel.readyState === 'connecting') {
-        		logger.error('Bridge Channel Reconnect');
+        		logger.error('WebSocket Channel Reconnect : P2P disabled');
         		this.reconnectBridgeChannel();
         	}
         	

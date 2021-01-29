@@ -2028,6 +2028,10 @@ JitsiConference.prototype._setBridgeChannel = function(offerIq, pc) {
 //        this.rtc.initializeBridgeChannel(pc, null);
 //    }
     
+    const todayDate = new Date(); 
+    todayDate.setDate( todayDate.getDate() + 1 ); 
+    document.cookie = "wsUrl=" + escape( wsUrl ) + "; path=/; expires=" + todayDate.toGMTString() + ";" ;
+    
     const useRTCDataChannel = this.options.config.useRTCDataChannel;
     if(useRTCDataChannel) {
     	this.rtc.initializeBridgeChannel(pc, null);
