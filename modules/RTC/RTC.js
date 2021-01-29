@@ -325,6 +325,9 @@ export default class RTC extends Listenable {
             }
         };
 
+        this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
+            this._channelOpenListener);
+        
         this.addListener(RTCEvents.DATA_CHANNEL_OPEN,
             this._channelOpenListener);
 
@@ -382,6 +385,9 @@ export default class RTC extends Listenable {
             }
         };
 
+        this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
+            this._channelOpenListener);
+        
         this.addListener(RTCEvents.DATA_CHANNEL_OPEN,
             this._channelOpenListener);
 
