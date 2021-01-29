@@ -312,8 +312,7 @@ export default class RTC extends Listenable {
                     error);
             }
 
-            this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
-                this._channelOpenListener);
+            this.removeAllListeners(RTCEvents.DATA_CHANNEL_OPEN);
             this._channelOpenListener = null;
 
             // If setLastN was invoked before the bridge channel completed
@@ -325,9 +324,6 @@ export default class RTC extends Listenable {
             }
         };
 
-        this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
-            this._channelOpenListener);
-        
         this.addListener(RTCEvents.DATA_CHANNEL_OPEN,
             this._channelOpenListener);
 
@@ -376,8 +372,7 @@ export default class RTC extends Listenable {
                     error);
             }
 
-            this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
-                this._channelOpenListener);
+            this.removeAllListeners(RTCEvents.DATA_CHANNEL_OPEN);
             this._channelOpenListener = null;
 
             if (this._lastN !== -1) {
@@ -385,9 +380,6 @@ export default class RTC extends Listenable {
             }
         };
 
-        this.removeListener(RTCEvents.DATA_CHANNEL_OPEN,
-            this._channelOpenListener);
-        
         this.addListener(RTCEvents.DATA_CHANNEL_OPEN,
             this._channelOpenListener);
 
@@ -531,6 +523,13 @@ export default class RTC extends Listenable {
      */
     static removeListener(eventType, listener) {
         RTCUtils.removeListener(eventType, listener);
+    }
+    
+    /**
+     * Bizwell. listener 처리
+     */
+    static removeAllListeners(eventType) {
+    	RTCUtils.removeAllListeners(eventType);
     }
 
     /**

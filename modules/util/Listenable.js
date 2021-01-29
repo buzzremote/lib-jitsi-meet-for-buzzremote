@@ -40,4 +40,11 @@ export default class Listenable {
     removeListener(eventName, listener) {
         this.eventEmitter.removeListener(eventName, listener);
     }
+    
+    /**
+     * Bizwell. listener 처리
+     */
+    removeAllListeners(eventName) {
+    	this.eventEmitter.removeAllListeners(eventName);
+    }
 }
