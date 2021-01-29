@@ -344,6 +344,8 @@ export default class RTC extends Listenable {
         this._channel = new BridgeChannel(
             peerconnection, null, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
         
+        this._channel.reconnectBridgeChannel = this.reconnectBridgeChannel.bind(this);
+        
         this._channelOpenListener = () => {
         	logger.error('Bridge Channel Reconnected!');
             try {
