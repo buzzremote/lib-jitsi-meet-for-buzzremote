@@ -372,6 +372,8 @@ export default class RTC extends Listenable {
 
             this.removeAllListeners(RTCEvents.DATA_CHANNEL_OPEN);
             this._channelOpenListener = null;
+            
+            this.delCookie("wsUrl");
 
             if (this._lastN !== -1) {
                 this._channel.sendSetLastNMessage(this._lastN);
@@ -393,7 +395,7 @@ export default class RTC extends Listenable {
 	      while (i < clen) {    
 	    	  var j = i + alen;    
 	    	  if (document.cookie.substring(i, j) == arg)      
-	    	      return getCookieVal (j);    
+	    	      return this.getCookieVal (j);    
 	    	   i = document.cookie.indexOf(" ", i) + 1;    
 	    	   if (i == 0) break;   
 	      }  
