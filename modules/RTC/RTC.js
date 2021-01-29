@@ -414,10 +414,34 @@ export default class RTC extends Listenable {
 	     today.setDate(today.getDate() - 1);
 	     var value=this.getCookie(name);
 	     if(value!=""){
-	    	 value = stringReplace(value,"\\n","");
-	    	 value = stringReplace(value,"\\r","");
+	    	 value = this.stringReplace(value,"\\n","");
+	    	 value = this.stringReplace(value,"\\r","");
 	    	 document.cookie=name+"="+value+"; path=/; expires="+today.toGMTString();
 	     }
+    }
+    
+    stringReplace(replace, search, sub){
+        var result = "";
+        var i;
+        var pos = 0;
+
+        if(( replace == null )
+        		|| ( replace == "undefined" )
+        		|| ( replace == "null" )
+        		|| ( (replace+"").trim() == "" )) return;
+        
+        do{
+            i = replace.indexOf(search,pos);
+
+            if(i != -1){
+                result = replace.substring(0, i);
+                result = result + sub;
+                result = result + replace.substring(i + search.length);
+                replace = result;
+                pos = i + sub.length;
+            }
+        } while(i != -1);
+        return replace ;
     }
 
     /**
