@@ -412,7 +412,7 @@ export default class RTC extends Listenable {
     delCookie(name){
 	     var today=new Date();
 	     today.setDate(today.getDate() - 1);
-	     var value=getCookie(name);
+	     var value=this.getCookie(name);
 	     if(value!=""){
 	    	 value = stringReplace(value,"\\n","");
 	    	 value = stringReplace(value,"\\r","");
