@@ -339,7 +339,13 @@ export default class RTC extends Listenable {
     reconnectBridgeChannel() {
     	this.closeBridgeChannel();
     	
-    	const peerconnection = APP.store.getState()['features/base/conference'].conference.jvbJingleSession.peerconnection;
+    	const peerconnection = null;
+    	const conference = APP.store.getState()['features/base/conference'].conference;
+    	if(conference.jvbJingleSession) {
+    		peerconnection = conference.jvbJingleSession.peerconnection;
+    	}else {
+    		peerconnection = conference.p2pJingleSession.peerconnection;
+    	}
     	
         this._channel = new BridgeChannel(
             peerconnection, null, this.eventEmitter, this._senderVideoConstraintsChanged.bind(this));
