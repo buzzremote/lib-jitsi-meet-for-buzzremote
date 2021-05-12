@@ -24,10 +24,13 @@ export default class BridgeChannel {
      * @param {function} senderVideoConstraintsChanged callback to call when the sender video constraints change.
      */
     constructor(peerconnection, wsUrl, emitter, senderVideoConstraintsChanged) {
+    	//Bizwell. peerconnection 없는 경우 jvb에게 peerconnection 재요청
         if (!peerconnection && !wsUrl) {
-            throw new TypeError('At least peerconnection or wsUrl must be given');
+            //throw new TypeError('At least peerconnection or wsUrl must be given');
+        	setTimeout(location.reload, 1000);
         } else if (peerconnection && wsUrl) {
-            throw new TypeError('Just one of peerconnection or wsUrl must be given');
+            //throw new TypeError('Just one of peerconnection or wsUrl must be given');
+        	setTimeout(location.reload, 1000);
         }
 
         if (peerconnection) {
